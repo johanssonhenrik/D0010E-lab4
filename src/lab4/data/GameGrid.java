@@ -21,8 +21,10 @@ public class GameGrid extends Observable{
 	 */
 	public GameGrid(int size){
 		gameGridArray = new int[size][size];
-		for(int i=0;i<size;i++){
-			Arrays.fill(gameGridArray[i], EMPTY);
+		for(int x=0;x<gameGridArray.length;x++){
+			for(int y=0;y<gameGridArray[y].length;y++){
+				gameGridArray[x][y] = EMPTY;
+			}
 		}
 	}
 	
@@ -43,7 +45,7 @@ public class GameGrid extends Observable{
 	 * @return the grid size
 	 */
 	public int getSize(){
-		return gameGridArray.length*2;	//n^2
+		return gameGridArray.length*gameGridArray[0].length;	//N^2
 	}
 	
 	/**
@@ -69,8 +71,10 @@ public class GameGrid extends Observable{
 	 * Clears the grid of pieces
 	 */
 	public void clearGrid(){
-		for(int i=0;i<getSize();i++){
-			Arrays.fill(gameGridArray[i], EMPTY);
+		for(int x=0;x<gameGridArray.length;x++){
+			for(int y=0;y<gameGridArray[y].length;y++){
+				gameGridArray[x][y] = EMPTY;
+			}
 		}
 		setChanged();
 		notifyObservers();
@@ -85,17 +89,60 @@ public class GameGrid extends Observable{
 	 */
 	public boolean isWinner(int player){
 		
-		//Horizontally
-		for(int x=0;x<getSize();x++){
-			for(int y=0;y<getSize();y++){
+		int winnerCounter = 0;
+		int moveCounter = INROW;
+		
+		for(int x=0;x<gameGridArray.length;x++){
+			for(int y=0;y<gameGridArray[y].length;y++){
 				
+				for(int rh=0;rh<=moveCounter && rh<=gameGridArray.length;rh++){	//RightHorizontally X-Coord rh.
+					if(getLocation(rh,y)==player){
+						winnerCounter++;
+						moveCounter++;
+					}else{
+						winnerCounter = moveCounter = 0;
+					}
+					if(winnerCounter == INROW){return true;}
+				}
+				winnerCounter = moveCounter = 0;
 				
+				for(int uv=0;uv<=moveCounter && uv<=gameGridArray[uv].length;uv++){	//UpVertically X-Coord uv.
+					if(getLocation(x,uv)==player){
+						winnerCounter++;
+						moveCounter++;
+					}else{
+						winnerCounter = moveCounter = 0;
+					}
+					if(winnerCounter == INROW){return true;}
+				}
+				winnerCounter = moveCounter = 0;
+				
+				int sedy = y;
+				for(int sedx=x;sedx<=moveCounter && sedx<=gameGridArray.length  && sedy>=gameGridArray[sedx].length;sedx++){	//SouthEastDiagonally X & Y-Coord sedx, sedy.
+					if(getLocation(sedx,sedy)==player){
+						winnerCounter++;
+						moveCounter++;
+					}else{
+						winnerCounter = moveCounter = 0;
+					}
+					if(winnerCounter == INROW){return true;}
+					sedy--;
+				}
+				winnerCounter = moveCounter = 0;
+				
+				int nedy = y;
+				for(int nedx=x;nedx<=moveCounter && nedx<=gameGridArray.length  && nedy>=gameGridArray[nedx].length;nedx++){	//NorthEastDiagonally X & Y-Coord nedx, nedy.
+					if(getLocation(nedx,nedy)==player){
+						winnerCounter++;
+						moveCounter++;
+					}else{
+						winnerCounter = moveCounter = 0;
+					}
+					if(winnerCounter == INROW){return true;}
+				}
+				winnerCounter = moveCounter = 0;
 			}
 		}
-		//Vertically
-		//Diagonally
-		
-		
-		return true;
+		return false;
 	}
 }

@@ -15,8 +15,12 @@ import lab4.data.GameGrid;
  */
 
 public class GamePanel extends JPanel implements Observer{
-
-	private final int UNIT_SIZE = 20;
+	private int x= 1;
+	private int y= 2;
+	private Color colorEMPTY = Color.white;
+	private Color colorME = Color.yellow;
+	private Color colorOTHER = Color.black;
+	public final int UNIT_SIZE = 20;	//Public for GomokuGUI
 	private GameGrid grid;
 	
 	/**
@@ -41,7 +45,10 @@ public class GamePanel extends JPanel implements Observer{
 	 * @param y the y coordinates
 	 * @return an integer array containing the [x, y] grid position
 	 */
-	public int[] getGridPosition(int x, int y){}
+	public int[] getGridPosition(int x, int y){
+		int[] integerArray = {x,y}; // unit size for conversion??
+		return integerArray;
+	}
 	
 	public void update(Observable arg0, Object arg1) {
 		this.repaint();
@@ -49,6 +56,38 @@ public class GamePanel extends JPanel implements Observer{
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
+		for(int i=0;i<grid.getSize(); i++){
+			for(int ii =0; ii<Math.sqrt(grid.getSize());ii++){
+				
+				if(grid.getLocation(ii,i)==GameGrid.EMPTY){
+					g.setColor(colorEMPTY);
+					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
+					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
+					x = x + UNIT_SIZE;
+					y = y + UNIT_SIZE;
+				}
+				if(grid.getLocation(ii,i)==GameGrid.ME){
+					g.setColor(colorME);
+					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
+					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
+					x = x + UNIT_SIZE;
+					y = y + UNIT_SIZE;
+				}
+				if(grid.getLocation(ii,i)==GameGrid.OTHER){
+					g.setColor(colorOTHER);
+					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
+					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
+					x = x + UNIT_SIZE;
+					y = y + UNIT_SIZE;
+				}
+			}
+			
+		}
+		
+		
+		
+	}
+	public void haxx(){
 		
 	}
 	

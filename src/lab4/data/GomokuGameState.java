@@ -15,7 +15,7 @@ import lab4.client.GomokuClient;
 public class GomokuGameState extends Observable implements Observer{
 
    // Game variables
-	private final int DEFAULT_SIZE = 15;
+	public final int DEFAULT_SIZE = 15;	//Public for GomokuGUI
 	private GameGrid gameGrid;
 	
     //Possible game states

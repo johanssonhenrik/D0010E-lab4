@@ -139,6 +139,7 @@ public class GameGrid extends Observable{
 						winnerCounter = moveCounter = 0;
 					}
 					if(winnerCounter == INROW){return true;}
+					nedy++;
 				}
 				winnerCounter = moveCounter = 0;
 			}

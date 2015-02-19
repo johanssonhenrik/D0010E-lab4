@@ -58,37 +58,43 @@ public class GamePanel extends JPanel implements Observer{
 		super.paintComponent(g);
 		for(int i=0;i<grid.getSize(); i++){
 			for(int ii =0; ii<Math.sqrt(grid.getSize());ii++){
-				
-				if(grid.getLocation(ii,i)==GameGrid.EMPTY){
-					g.setColor(colorEMPTY);
-					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
-					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
-					x = x + UNIT_SIZE;
-					y = y + UNIT_SIZE;
-				}
-				if(grid.getLocation(ii,i)==GameGrid.ME){
-					g.setColor(colorME);
-					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
-					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
-					x = x + UNIT_SIZE;
-					y = y + UNIT_SIZE;
-				}
-				if(grid.getLocation(ii,i)==GameGrid.OTHER){
-					g.setColor(colorOTHER);
-					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
-					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
-					x = x + UNIT_SIZE;
-					y = y + UNIT_SIZE;
-				}
+				buildingRect(ii,i,GameGrid.EMPTY,colorEMPTY,g);
+				buildingRect(ii,i,GameGrid.ME,colorME,g);
+				buildingRect(ii,i,GameGrid.OTHER,colorOTHER,g);
+//				if(grid.getLocation(ii,i)==GameGrid.EMPTY){
+//					g.setColor(colorEMPTY);
+//					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
+//					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
+//					x = x + UNIT_SIZE;
+//					y = y + UNIT_SIZE;
+//				}
+//				if(grid.getLocation(ii,i)==GameGrid.ME){
+//					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
+//					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
+//					y = y + UNIT_SIZE;
+//				}
+//				if(grid.getLocation(ii,i)==GameGrid.OTHER){
+//					g.setColor(colorOTHER);
+//					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
+//					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
+//					x = x + UNIT_SIZE;
+//					y = y + UNIT_SIZE;
+//				}
 			}
 			
 		}
 		
 		
-		
+		this.repaint();	
 	}
-	public void haxx(){
-		
+	public void buildingRect(int Xs,int Ys,int State,Color color,Graphics g){
+		if(grid.getLocation(Xs,Ys)==State){
+			g.setColor(color);
+			g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
+			g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
+			x = x + UNIT_SIZE;
+			y = y + UNIT_SIZE;
+		}
 	}
 	
 }

@@ -5,96 +5,110 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Observable;
 import java.util.Observer;
-
+import javax.swing.JLabel;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import lab4.data.GameGrid;
+import lab4.data.GomokuGameState;
 
 /**
  * A panel providing a graphical view of the game board
  */
+public class GamePanel extends JPanel implements Observer {
+	private Color colorEMPTY = Color.black;
+	private Color colorME = Color.green;
+	private Color colorOTHER = Color.red;
+	public static int UNIT_SIZE = 20;
+	public GameGrid grid;
+	private GomokuGameState gameState;
 
-public class GamePanel extends JPanel implements Observer{
-	private int x= 1;
-	private int y= 2;
-	private Color colorEMPTY = Color.white;
-	private Color colorME = Color.yellow;
-	private Color colorOTHER = Color.black;
-	public final int UNIT_SIZE = 20;	//Public for GomokuGUI
-	private GameGrid grid;
-	
 	/**
 	 * The constructor
 	 * 
-	 * @param grid The grid that is to be displayed
+	 * @param grid
+	 *            The grid that is to be displayed
 	 */
-	public GamePanel(GameGrid grid){
+	public GamePanel(GameGrid grid) {
 		this.grid = grid;
 		grid.addObserver(this);
-		Dimension d = new Dimension(grid.getSize()*UNIT_SIZE+1, grid.getSize()*UNIT_SIZE+1);
+		Dimension d = new Dimension(grid.getSize() * UNIT_SIZE + 1,
+				grid.getSize() * UNIT_SIZE + 1);
 		this.setMinimumSize(d);
 		this.setPreferredSize(d);
-		this.setBackground(Color.WHITE);
+		this.setBackground(Color.white);
+		this.setVisible(true);
+		getGridPosition(55,43);
 	}
 
 	/**
-	 * Returns a grid position given pixel coordinates
-	 * of the panel
+	 * Returns a grid position given pixel coordinates of the panel
 	 * 
-	 * @param x the x coordinates
-	 * @param y the y coordinates
+	 * @param x
+	 *            the x coordinates
+	 * @param y
+	 *            the y coordinates
 	 * @return an integer array containing the [x, y] grid position
 	 */
-	public int[] getGridPosition(int x, int y){
-		int[] integerArray = {x,y}; // unit size for conversion??
+	public int[] getGridPosition(int x, int y) {
+		int[] integerArray = { x/UNIT_SIZE, y/UNIT_SIZE}; // unit size for conversion??
+		System.out.println(integerArray[0]+" , "+integerArray[1]);
 		return integerArray;
 	}
-	
+
 	public void update(Observable arg0, Object arg1) {
 		this.repaint();
 	}
-	
-	public void paintComponent(Graphics g){
+
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for(int i=0;i<grid.getSize(); i++){
-			for(int ii =0; ii<Math.sqrt(grid.getSize());ii++){
-				buildingRect(ii,i,GameGrid.EMPTY,colorEMPTY,g);
-				buildingRect(ii,i,GameGrid.ME,colorME,g);
-				buildingRect(ii,i,GameGrid.OTHER,colorOTHER,g);
-//				if(grid.getLocation(ii,i)==GameGrid.EMPTY){
-//					g.setColor(colorEMPTY);
-//					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
-//					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
-//					x = x + UNIT_SIZE;
-//					y = y + UNIT_SIZE;
-//				}
-//				if(grid.getLocation(ii,i)==GameGrid.ME){
-//					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
-//					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
-//					y = y + UNIT_SIZE;
-//				}
-//				if(grid.getLocation(ii,i)==GameGrid.OTHER){
-//					g.setColor(colorOTHER);
-//					g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
-//					g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
-//					x = x + UNIT_SIZE;
-//					y = y + UNIT_SIZE;
-//				}
+		for (int i = 0; i < Math.sqrt(grid.getSize()); i++) { // Y
+			for (int ii = 0; ii < Math.sqrt(grid.getSize()); ii++) {// X
+			// if(grid.getLocation(1,2)==grid.EMPTY)
+				buildingRect(ii, i, grid.EMPTY, colorEMPTY, g);
+				if(grid.getLocation(ii,i)==grid.ME){
+					buildingOval(ii, i, grid.ME, colorME, g);
+				}
+				if(grid.getLocation(ii,i)==grid.OTHER){
+					buildingCross(ii, i, grid.OTHER, colorOTHER, g);
+				}
+				//
+				//
 			}
-			
 		}
-		
-		
-		this.repaint();	
+		//this.repaint();
 	}
-	public void buildingRect(int Xs,int Ys,int State,Color color,Graphics g){
-		if(grid.getLocation(Xs,Ys)==State){
-			g.setColor(color);
-			g.drawRect(x,y,UNIT_SIZE,UNIT_SIZE);
-			g.fillRect(x,y,UNIT_SIZE,UNIT_SIZE);
-			x = x + UNIT_SIZE;
-			y = y + UNIT_SIZE;
-		}
+
+	/*
+	 * Creating gameFigures
+	 */
+	public void buildingRect(int Xs, int Ys, int State, Color color, Graphics g) {
+		// if(grid.getLocation(Xs,Ys)==State){ // gör ingen skillnad
+		int x = UNIT_SIZE;
+		int y = UNIT_SIZE;
+		g.setColor(color);
+		// g.create(Xs+20, Ys+20, UNIT_SIZE, UNIT_SIZE);
+		g.drawRect(Xs * x-Xs, Ys * y-Ys, UNIT_SIZE, UNIT_SIZE);
+		//g.setColor(color);
+		//g.fillRect(Xs * x, Ys * y, UNIT_SIZE, UNIT_SIZE);
+		// }
 	}
-	
+
+	public void buildingOval(int Xs, int Ys, int State, Color color, Graphics g) {
+		// if(grid.getLocation(Xs,Ys)==State){ // gör ingen skillnad
+		int x = UNIT_SIZE + 1;
+		int y = UNIT_SIZE + 1;
+		g.setColor(color);
+		g.drawOval(Xs * x-Xs, Ys * y-Ys, UNIT_SIZE - 3, UNIT_SIZE - 3);
+		// }
+	}
+
+	public void buildingCross(int Xs, int Ys, int State, Color color, Graphics g) {
+		// if(grid.getLocation(Xs,Ys)==State){ // gör ingen skillnad
+		int x = UNIT_SIZE;
+		int y = UNIT_SIZE;
+		g.setColor(color);
+		g.drawLine(Xs * x + Xs, Ys * y + Ys, Xs * x + x + Xs, y * Ys + y + Ys);
+		g.drawLine(Xs * x + Xs, y * Ys + y + Ys, Xs * x + Xs + x, Ys * y + Ys);
+		// }
+	}
 }

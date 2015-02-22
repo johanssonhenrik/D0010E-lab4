@@ -29,6 +29,7 @@ public class GomokuGUI implements Observer{
 	JButton connectButton;
 	JButton newGameButton;
 	JButton disconnectButton;
+	ConnectionWindow connectionWindow;
 	
 	/**
 	 * The constructor
@@ -66,7 +67,7 @@ public class GomokuGUI implements Observer{
 			public void actionPerformed(ActionEvent arg0) {
 				String keyInput = arg0.getActionCommand();
 				if(keyInput.equals("Connect")){
-					//
+					connectionWindow = new ConnectionWindow(client);
 					messageLabel.setText("Connection to player established.");
 				}
 			}

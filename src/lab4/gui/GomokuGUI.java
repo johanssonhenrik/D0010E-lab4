@@ -49,11 +49,10 @@ public class GomokuGUI implements Observer{
 		frame.setVisible(true);
 		frame.setResizable(false);
 		frame.setBackground(Color.WHITE);
-		
 		gameGridPanel = new GamePanel(gamestate.getGameGrid());
 		gameGridPanel.setSize(200,200);
 		gameGridPanel.setVisible(true);
-		
+		// frame.add(gameGridPanel)
 		messageLabel = new JLabel();
 		connectButton = new JButton("Connect");
 		newGameButton = new JButton("New Game");

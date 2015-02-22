@@ -20,6 +20,9 @@ public class GomokuGameState extends Observable implements Observer{
 	
     //Possible game states
 	private final int NOT_STARTED = 0;
+	private final int MY_TURN = 1;
+	private final int OTHER_TURN = 2;
+	private final int FINISHED = 3;
 	private int currentState;
 	
 	private GomokuClient client;
@@ -45,14 +48,18 @@ public class GomokuGameState extends Observable implements Observer{
 	 * 
 	 * @return the message string
 	 */
-	public String getMessageString(){}
+	public String getMessageString(){
+		return message;//message to display notify obs, setchanged
+	}
 	
 	/**
 	 * Returns the game grid
 	 * 
 	 * @return the game grid
 	 */
-	public GameGrid getGameGrid(){}
+	public GameGrid getGameGrid(){
+		return gameGrid;
+	}
 
 	/**
 	 * This player makes a move at a specified location
@@ -60,29 +67,78 @@ public class GomokuGameState extends Observable implements Observer{
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 */
-	public void move(int x, int y){}
-	
+	public void move(int x, int y){
+		//carries out a move the player \me" makes, if possible.
+		if(currentState != FINISHED || currentState != NOT_STARTED){
+			if(currentState==MY_TURN){
+				if(gameGrid.move(x, y, GameGrid.ME )){
+					message = "Square is empty! Move"+"("+x+","+y+") made";
+					// (GomokuClient)client.sendMoveMessage(x,y)
+					receivedMove(x,y);
+					gameGrid.isWinner(GameGrid.ME);
+					currentState=OTHER_TURN;
+					setChangedNnotify();
+				}
+				else{
+					message = "Square is not empty, move is not made!";
+					setChangedNnotify();
+				}
+			}
+			else{
+				message = "It´s not your turn, move is not made!";
+				setChangedNnotify();
+			}
+		}
+		else{
+			message = "The game is not started or already finished!";
+			setChangedNnotify();
+		}	
+	}
+	public void setChangedNnotify(){
+		setChanged();
+		notifyObservers();
 	/**
 	 * Starts a new game with the current client
 	 */
-	public void newGame(){}
+	public void newGame(){
+		gameGrid.clearGrid();
+		currentState = OTHER_TURN;
+		message = "You have just started a NEW GAME!";
+		setChangedNnotify();
+	}
 	
 	/**
 	 * Other player has requested a new game, so the 
 	 * game state is changed accordingly
 	 */
-	public void receivedNewGame(){}
+	public void receivedNewGame(){
+		gameGrid.clearGrid();
+		currentState = MY_TURN;
+		message = "The other player started a NEW GAME!";
+		setChangedNnotify();
+	}
 	
 	/**
 	 * The connection to the other player is lost, 
 	 * so the game is interrupted
 	 */
-	public void otherGuyLeft(){}
+	public void otherGuyLeft(){
+		gameGrid.clearGrid();
+		message = "The connection to the other player is lost";
+		currentState = NOT_STARTED;
+		setChangedNnotify();
+	}
 	
 	/**
 	 * The player disconnects from the client
 	 */
-	public void disconnect(){}
+	public void disconnect(){
+		gameGrid.clearGrid();
+		message = "You are now disconnecting..";
+		currentState = NOT_STARTED;
+		// client.disconnect();
+		setChangedNnotify();
+	}
 	
 	/**
 	 * The player receives a move from the other player
@@ -90,7 +146,19 @@ public class GomokuGameState extends Observable implements Observer{
 	 * @param x The x coordinate of the move
 	 * @param y The y coordinate of the move
 	 */
-	public void receivedMove(int x, int y){}
+	public void receivedMove(int x, int y){
+		if(gameGrid.isWinner(GameGrid.OTHER)){
+			// need to update board.
+			message = "The other player won!";
+			currentState = FINISHED;
+			setChangedNnotify();
+		}	
+		else {
+			message = "The other player did not win after this move, its now your turn!";
+			currentState = MY_TURN;
+			setChangedNnotify();
+		}
+	}
 	
 	public void update(Observable o, Object arg) {
 		
@@ -104,8 +172,7 @@ public class GomokuGameState extends Observable implements Observer{
 			currentState = OTHER_TURN;
 			break;
 		}
-		setChanged();
-		notifyObservers();
+		setChangedNnotify();
 		
 		
 	}

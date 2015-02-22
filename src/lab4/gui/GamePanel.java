@@ -5,9 +5,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.JLabel;
-import javax.swing.JFrame;
+
 import javax.swing.JPanel;
+
 import lab4.data.GameGrid;
 import lab4.data.GomokuGameState;
 
@@ -31,8 +31,8 @@ public class GamePanel extends JPanel implements Observer {
 	public GamePanel(GameGrid grid) {
 		this.grid = grid;
 		grid.addObserver(this);
-		Dimension d = new Dimension(grid.getSize() * UNIT_SIZE + 1,
-				grid.getSize() * UNIT_SIZE + 1);
+		Dimension d = new Dimension(grid.getSize() * UNIT_SIZE,
+				grid.getSize() * UNIT_SIZE);
 		this.setMinimumSize(d);
 		this.setPreferredSize(d);
 		this.setBackground(Color.white);
@@ -51,7 +51,7 @@ public class GamePanel extends JPanel implements Observer {
 	 */
 	public int[] getGridPosition(int x, int y) {
 		int[] integerArray = { x/UNIT_SIZE, y/UNIT_SIZE}; // unit size for conversion??
-		System.out.println(integerArray[0]+" , "+integerArray[1]);
+		System.out.println("("+integerArray[0]+" , "+integerArray[1]+")");
 		return integerArray;
 	}
 
@@ -63,7 +63,7 @@ public class GamePanel extends JPanel implements Observer {
 		super.paintComponent(g);
 		for (int i = 0; i < Math.sqrt(grid.getSize()); i++) { // Y
 			for (int ii = 0; ii < Math.sqrt(grid.getSize()); ii++) {// X
-			// if(grid.getLocation(1,2)==grid.EMPTY)
+			 if(grid.getLocation(ii,i)==grid.EMPTY)
 				buildingRect(ii, i, grid.EMPTY, colorEMPTY, g);
 				if(grid.getLocation(ii,i)==grid.ME){
 					buildingOval(ii, i, grid.ME, colorME, g);
@@ -71,8 +71,8 @@ public class GamePanel extends JPanel implements Observer {
 				if(grid.getLocation(ii,i)==grid.OTHER){
 					buildingCross(ii, i, grid.OTHER, colorOTHER, g);
 				}
-				//
-				//
+				
+				
 			}
 		}
 		//this.repaint();
@@ -86,19 +86,15 @@ public class GamePanel extends JPanel implements Observer {
 		int x = UNIT_SIZE;
 		int y = UNIT_SIZE;
 		g.setColor(color);
-		// g.create(Xs+20, Ys+20, UNIT_SIZE, UNIT_SIZE);
-		g.drawRect(Xs * x-Xs, Ys * y-Ys, UNIT_SIZE, UNIT_SIZE);
-		//g.setColor(color);
-		//g.fillRect(Xs * x, Ys * y, UNIT_SIZE, UNIT_SIZE);
-		// }
+		g.drawRect(Xs * x, Ys * y, UNIT_SIZE, UNIT_SIZE);
 	}
 
 	public void buildingOval(int Xs, int Ys, int State, Color color, Graphics g) {
-		// if(grid.getLocation(Xs,Ys)==State){ // gör ingen skillnad
-		int x = UNIT_SIZE + 1;
-		int y = UNIT_SIZE + 1;
+		
+		int x = UNIT_SIZE;
+		int y = UNIT_SIZE;
 		g.setColor(color);
-		g.drawOval(Xs * x-Xs, Ys * y-Ys, UNIT_SIZE - 3, UNIT_SIZE - 3);
+		g.drawOval(Xs * x+1, Ys * y+1,UNIT_SIZE-2,UNIT_SIZE-2);
 		// }
 	}
 
@@ -107,8 +103,8 @@ public class GamePanel extends JPanel implements Observer {
 		int x = UNIT_SIZE;
 		int y = UNIT_SIZE;
 		g.setColor(color);
-		g.drawLine(Xs * x + Xs, Ys * y + Ys, Xs * x + x + Xs, y * Ys + y + Ys);
-		g.drawLine(Xs * x + Xs, y * Ys + y + Ys, Xs * x + Xs + x, Ys * y + Ys);
+		g.drawLine(Xs * x, Ys * y, Xs * x + x, y * Ys + y);
+		g.drawLine(Xs * x,y * Ys + y, Xs * x + x,  Ys * y);
 		// }
 	}
 }

@@ -22,7 +22,7 @@ public class GameGrid extends Observable{
 	public GameGrid(int size){
 		gameGridArray = new int[size][size];
 		for(int x=0;x<gameGridArray.length;x++){
-			for(int y=0;y<gameGridArray[y].length;y++){
+			for(int y=0;y<gameGridArray[x].length;y++){
 				gameGridArray[x][y] = EMPTY;
 			}
 		}

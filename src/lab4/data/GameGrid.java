@@ -1,5 +1,4 @@
 package lab4.data;
-import java.util.Arrays;
 import java.util.Observable;
 
 /**
@@ -7,9 +6,9 @@ import java.util.Observable;
  */
 public class GameGrid extends Observable{
 
-	public static int EMPTY;
-	public static int ME;
-	public static int OTHER;
+	public static int EMPTY = 0;
+	public static int ME = 1;
+	public static int OTHER = 2;
 	public static int INROW = 5;
 	
 	private int[][] gameGridArray;
@@ -45,7 +44,7 @@ public class GameGrid extends Observable{
 	 * @return the grid size
 	 */
 	public int getSize(){
-		return gameGridArray.length*gameGridArray[0].length;	//N^2
+		return gameGridArray.length;//*gameGridArray[0].length;	//N^2
 	}
 	
 	/**
@@ -60,7 +59,7 @@ public class GameGrid extends Observable{
 		if(gameGridArray[x][y]!=EMPTY){
 			return false;
 		}else{
-			gameGridArray[x][y] = player;
+			gameGridArray[x][y] = ME;
 			setChanged();
 			notifyObservers();
 			return true;
@@ -72,7 +71,7 @@ public class GameGrid extends Observable{
 	 */
 	public void clearGrid(){
 		for(int x=0;x<gameGridArray.length;x++){
-			for(int y=0;y<gameGridArray[y].length;y++){
+			for(int y=0;y<gameGridArray[x].length;y++){
 				gameGridArray[x][y] = EMPTY;
 			}
 		}
@@ -93,7 +92,7 @@ public class GameGrid extends Observable{
 		int moveCounter = INROW;
 		
 		for(int x=0;x<gameGridArray.length;x++){
-			for(int y=0;y<gameGridArray[y].length;y++){
+			for(int y=0;y<gameGridArray[x].length;y++){
 				
 				for(int rh=0;rh<=moveCounter && rh<=gameGridArray.length;rh++){	//RightHorizontally X-Coord rh.
 					if(getLocation(rh,y)==player){

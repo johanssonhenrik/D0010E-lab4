@@ -70,14 +70,19 @@ public class GomokuGameState extends Observable implements Observer{
 	public void move(int x, int y){
 		//carries out a move the player \me" makes, if possible.
 		if(currentState != FINISHED || currentState != NOT_STARTED){
-			if(currentState==MY_TURN){
-				if(gameGrid.move(x, y, GameGrid.ME )){
+			if(currentState == MY_TURN){
+				if(gameGrid.move(x, y, GameGrid.ME)){
 					message = "Square is empty! Move"+"("+x+","+y+") made";
-					// (GomokuClient)client.sendMoveMessage(x,y)
-					receivedMove(x,y);
-					gameGrid.isWinner(GameGrid.ME);
+					client.sendMoveMessage(x,y);
 					currentState=OTHER_TURN;
-					setChangedNnotify();
+					if(gameGrid.isWinner(GameGrid.ME)){
+						currentState=FINISHED;
+						setChangedNnotify();
+					}else{
+						receivedMove(x,y);
+						currentState=OTHER_TURN;
+						setChangedNnotify();
+					}
 				}
 				else{
 					message = "Square is not empty, move is not made!";
@@ -85,6 +90,7 @@ public class GomokuGameState extends Observable implements Observer{
 				}
 			}
 			else{
+				
 				message = "It´s not your turn, move is not made!";
 				setChangedNnotify();
 			}
@@ -97,6 +103,7 @@ public class GomokuGameState extends Observable implements Observer{
 	public void setChangedNnotify(){
 		setChanged();
 		notifyObservers();
+	}
 	/**
 	 * Starts a new game with the current client
 	 */
@@ -104,6 +111,7 @@ public class GomokuGameState extends Observable implements Observer{
 		gameGrid.clearGrid();
 		currentState = OTHER_TURN;
 		message = "You have just started a NEW GAME!";
+		client.sendNewGameMessage();
 		setChangedNnotify();
 	}
 	
@@ -136,7 +144,7 @@ public class GomokuGameState extends Observable implements Observer{
 		gameGrid.clearGrid();
 		message = "You are now disconnecting..";
 		currentState = NOT_STARTED;
-		// client.disconnect();
+		client.disconnect();
 		setChangedNnotify();
 	}
 	
@@ -155,7 +163,7 @@ public class GomokuGameState extends Observable implements Observer{
 		}	
 		else {
 			message = "The other player did not win after this move, its now your turn!";
-			currentState = MY_TURN;
+			//currentState = MY_TURN;
 			setChangedNnotify();
 		}
 	}

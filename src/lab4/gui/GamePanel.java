@@ -61,21 +61,21 @@ public class GamePanel extends JPanel implements Observer {
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for (int i = 0; i < Math.sqrt(grid.getSize()); i++) { // Y
-			for (int ii = 0; ii < Math.sqrt(grid.getSize()); ii++) {// X
-			 if(grid.getLocation(ii,i)==grid.EMPTY)
-				buildingRect(ii, i, grid.EMPTY, colorEMPTY, g);
-				if(grid.getLocation(ii,i)==grid.ME){
-					buildingOval(ii, i, grid.ME, colorME, g);
+		for (int i = 0; i < grid.getSize(); i++) { // Y
+			for (int ii = 0; ii < grid.getSize(); ii++) {// X
+			 if(grid.getLocation(ii,i)==GameGrid.EMPTY)
+				buildingRect(ii, i, GameGrid.EMPTY, colorEMPTY, g);
+				if(grid.getLocation(ii,i)==GameGrid.ME){
+					buildingOval(ii, i, GameGrid.ME, colorME, g);
 				}
-				if(grid.getLocation(ii,i)==grid.OTHER){
-					buildingCross(ii, i, grid.OTHER, colorOTHER, g);
+				if(grid.getLocation(ii,i)==GameGrid.OTHER){
+					buildingCross(ii, i, GameGrid.OTHER, colorOTHER, g);
 				}
 				
 				
 			}
 		}
-		//this.repaint();
+		this.repaint();
 	}
 
 	/*
@@ -107,5 +107,6 @@ public class GamePanel extends JPanel implements Observer {
 		g.drawLine(Xs * x,y * Ys + y, Xs * x + x,  Ys * y);
 		// }
 	}
+
 }
 

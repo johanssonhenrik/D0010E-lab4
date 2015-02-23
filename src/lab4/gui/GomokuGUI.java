@@ -46,7 +46,6 @@ public class GomokuGUI implements Observer{
 		
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.setSize();
 		frame.setSize(gamestate.DEFAULT_SIZE*GamePanel.UNIT_SIZE+10, gamestate.DEFAULT_SIZE*GamePanel.UNIT_SIZE+80);
 		frame.setTitle("Gomoku");
 		frame.setVisible(true);
@@ -100,8 +99,13 @@ public class GomokuGUI implements Observer{
 		});
 		
 		MouseAdapter mouseListener = new MouseAdapter(){
-			public void mouseInput(MouseEvent e){
-				gamestate.move(gameGridPanel.getGridPosition(e.getX(), e.getY())[0],(gameGridPanel.getGridPosition(e.getX(), e.getY()))[1]);
+			public void mouseClicked(MouseEvent e){
+				gamestate.move(gameGridPanel.getGridPosition(e.getX(), e.getY())[0],
+						(gameGridPanel.getGridPosition(e.getX(), e.getY()))[1]);
+				/*if(gamestate.MY_TURN){
+					
+				}*///gamestate.receivedMove(gameGridPanel.getGridPosition(e.getX(), e.getY())[0],
+					//	(gameGridPanel.getGridPosition(e.getX(), e.getY()))[1]);
 			}
 		};
 		

@@ -25,6 +25,7 @@ public class GomokuGUI implements Observer{
 	private GomokuGameState gamestate;
 	
 	GamePanel gameGridPanel;
+	GameGrid grid;
 	JLabel messageLabel;
 	JButton connectButton;
 	JButton newGameButton;
@@ -45,23 +46,29 @@ public class GomokuGUI implements Observer{
 		
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(gamestate.DEFAULT_SIZE*gameGridPanel.UNIT_SIZE, gamestate.DEFAULT_SIZE*gameGridPanel.UNIT_SIZE);
+		//frame.setSize();
+		frame.setSize(gamestate.DEFAULT_SIZE*GamePanel.UNIT_SIZE+10, gamestate.DEFAULT_SIZE*GamePanel.UNIT_SIZE+80);
 		frame.setTitle("Gomoku");
 		frame.setVisible(true);
 		frame.setResizable(false);
 		frame.setBackground(Color.WHITE);
+		
 		gameGridPanel = new GamePanel(gamestate.getGameGrid());
-		gameGridPanel.setSize(200,200);
+		//gameGridPanel.setSize(200,200);
 		gameGridPanel.setVisible(true);
-		// frame.add(gameGridPanel)
+		
+		//frame.add(gameGridPanel);
+		
 		messageLabel = new JLabel();
 		connectButton = new JButton("Connect");
 		newGameButton = new JButton("New Game");
 		disconnectButton = new JButton("Disconnect");
 		
-		connectButton.setSize(50,30);
-		newGameButton.setSize(50,30);
-		disconnectButton.setSize(50,30);
+		connectButton.setSize(10,30);
+		newGameButton.setSize(10,30);
+		disconnectButton.setSize(510,30);
+		
+		//connectButton.setVisible(true);
 	
 		connectButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {

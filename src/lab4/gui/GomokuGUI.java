@@ -76,7 +76,7 @@ public class GomokuGUI implements Observer{
 				String buttonInput = e.getActionCommand();
 				if(buttonInput.equals("New Game")){
 					gamestate.newGame();
-					messageLabel.setText("New game started");
+					messageLabel.setText("New game started"); //Use messageLabel.setText(gamestate.getMessageString());;
 				}
 			}
 		});
@@ -85,7 +85,7 @@ public class GomokuGUI implements Observer{
 				String buttonInput = e.getActionCommand();
 				if(buttonInput.equals("Disconnect")){
 					gamestate.disconnect();
-					messageLabel.setText("Disconnected from the game");
+					messageLabel.setText("Disconnected from the game")//messageLabel.setText(gamestate.getMessageString());
 				}
 			}
 		});

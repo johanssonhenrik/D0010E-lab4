@@ -110,6 +110,7 @@ public class GomokuGameState extends Observable implements Observer {
 	public void newGame() {
 		System.out.println(currentState);
 		if(currentState == FINISHED){
+			gameGrid.clearGrid();
 			message = "Click the New Game Button to play again";
 			client.sendNewGameMessage();
 			setChangedNnotify();

@@ -143,7 +143,7 @@ public class GameGrid extends Observable{
 			}
 		}
 		System.out.println(" ");
-		System.out.println("---------------------------["+consoleStringOutputCounter+"]---------------------------------");
+		System.out.println("---------------------------["+consoleStringOutputCounter+"]----------------------------INROW="+INROW+"-----");
 		consoleStringOutputCounter++;
 		return false;
 	}

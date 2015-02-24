@@ -12,6 +12,7 @@ public class GameGrid extends Observable{
 	public static int INROW = 5;
 	
 	private int[][] gameGridArray;
+	private int consoleStringOutputCounter = 0;
 	
 	/**
 	 * Constructor
@@ -59,7 +60,7 @@ public class GameGrid extends Observable{
 		if(gameGridArray[x][y]!=EMPTY){
 			return false;
 		}else{
-			gameGridArray[x][y] = ME;
+			gameGridArray[x][y] = player;
 			setChanged();
 			notifyObservers();
 			return true;
@@ -89,60 +90,61 @@ public class GameGrid extends Observable{
 	public boolean isWinner(int player){
 		
 		int winnerCounter = 0;
-		int moveCounter = INROW;
 		
 		for(int x=0;x<gameGridArray.length;x++){
 			for(int y=0;y<gameGridArray[x].length;y++){
 				
-				for(int rh=0;rh<=moveCounter && rh<=gameGridArray.length;rh++){	//RightHorizontally X-Coord rh.
-					if(getLocation(rh,y)==player){
+				for(int rh=0;rh<INROW && x+rh<gameGridArray.length;rh++){	//RightHorizontally X-Coord rh.
+					if(getLocation(x+rh,y)==player){	/*pekarens position + ett steg åt höger (+1 för varje loopar varv)*/
 						winnerCounter++;
-						moveCounter++;
+						System.out.println("RH winnerCounter="+winnerCounter+" rhloops="+rh);
 					}else{
-						winnerCounter = moveCounter = 0;
+						winnerCounter = 0;
 					}
 					if(winnerCounter == INROW){return true;}
 				}
-				winnerCounter = moveCounter = 0;
+				winnerCounter = 0;
 				
-				for(int uv=0;uv<=moveCounter && uv<=gameGridArray[uv].length;uv++){	//UpVertically X-Coord uv.
-					if(getLocation(x,uv)==player){
+				for(int uv=0;uv<INROW && y+uv<gameGridArray[x].length;uv++){	//UpVertically X-Coord uv.
+					if(getLocation(x,y+uv)==player){
 						winnerCounter++;
-						moveCounter++;
+						System.out.println("UV winnerCounter="+winnerCounter+" uvloops="+uv);
 					}else{
-						winnerCounter = moveCounter = 0;
+						winnerCounter = 0;
 					}
 					if(winnerCounter == INROW){return true;}
 				}
-				winnerCounter = moveCounter = 0;
+				winnerCounter = 0;
 				
 				int sedy = y;
-				for(int sedx=x;sedx<=moveCounter && sedx<=gameGridArray.length  && sedy>=gameGridArray[sedx].length;sedx++){	//SouthEastDiagonally X & Y-Coord sedx, sedy.
-					if(getLocation(sedx,sedy)==player){
+				for(int sedx=0;sedx<INROW && x+sedx<gameGridArray.length && sedy>=0;sedx++){	//SouthEastDiagonally X & Y-Coord sedx, sedy.
+					if(getLocation(x+sedx,y-sedx)==player){	//Obs y-sedx. inte y-sedy
 						winnerCounter++;
-						moveCounter++;
+						System.out.println("SED winnerCounter="+winnerCounter+" sedxloops="+sedx);
 					}else{
-						winnerCounter = moveCounter = 0;
+						winnerCounter = 0;
 					}
 					if(winnerCounter == INROW){return true;}
 					sedy--;
 				}
-				winnerCounter = moveCounter = 0;
+				winnerCounter = 0;
 				
-				int nedy = y;
-				for(int nedx=x;nedx<=moveCounter && nedx<=gameGridArray.length  && nedy>=gameGridArray[nedx].length;nedx++){	//NorthEastDiagonally X & Y-Coord nedx, nedy.
-					if(getLocation(nedx,nedy)==player){
+				//int nedy = y;
+				for(int nedx=0;nedx<INROW && x+nedx<=gameGridArray.length-INROW && y+nedx<=gameGridArray[nedx].length-INROW;nedx++){	//NorthEastDiagonally X & Y-Coord nedx, nedy.
+					if(getLocation(x+nedx,y+nedx)==player){
 						winnerCounter++;
-						moveCounter++;
+						System.out.println("NED winnerCounter="+winnerCounter+" nedxloops="+nedx);
 					}else{
-						winnerCounter = moveCounter = 0;
+						winnerCounter = 0;
 					}
 					if(winnerCounter == INROW){return true;}
-					nedy++;
 				}
-				winnerCounter = moveCounter = 0;
+				winnerCounter = 0;
 			}
 		}
+		System.out.println(" ");
+		System.out.println("---------------------------["+consoleStringOutputCounter+"]---------------------------------");
+		consoleStringOutputCounter++;
 		return false;
 	}
 }

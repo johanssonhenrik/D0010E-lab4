@@ -17,6 +17,7 @@ public class GamePanel extends JPanel implements Observer {
 	private Color colorME = Color.green;
 	private Color colorOTHER = Color.red;
 	public static int UNIT_SIZE = 40;
+
 	public GameGrid grid;
 	private GomokuGameState gameState;
 
@@ -79,6 +80,7 @@ public class GamePanel extends JPanel implements Observer {
 	 * Creating gameFigures
 	 */
 	public void buildingRect(int Xs, int Ys, int State, Color color, Graphics g) {
+
 		int x = UNIT_SIZE;
 		int y = UNIT_SIZE;
 		g.setColor(color);
@@ -93,6 +95,7 @@ public class GamePanel extends JPanel implements Observer {
 	}
 
 	public void buildingCross(int Xs, int Ys, int State, Color color, Graphics g) {
+
 		int x = UNIT_SIZE;
 		int y = UNIT_SIZE;
 		g.setColor(color);
@@ -100,3 +103,4 @@ public class GamePanel extends JPanel implements Observer {
 		g.drawLine(Xs * x, y * Ys + y, Xs * x + x, Ys * y);
 	}
 }
+

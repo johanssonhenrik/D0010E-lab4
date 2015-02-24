@@ -68,6 +68,7 @@ public class GomokuGameState extends Observable implements Observer {
 		if (currentState != FINISHED || currentState != NOT_STARTED){
 			if (currentState == MY_TURN) {
 				if (gameGrid.move(x, y, GameGrid.ME)){
+
 					message = "Square is empty! Move" + "(" + x + "," + y
 							+ ") made";
 					client.sendMoveMessage(x, y);
@@ -196,3 +197,4 @@ public class GomokuGameState extends Observable implements Observer {
 		return currentState;
 	}
 }
+

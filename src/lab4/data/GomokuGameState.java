@@ -12,7 +12,7 @@ import lab4.client.GomokuClient;
  */
 public class GomokuGameState extends Observable implements Observer {
 	// Game variables
-	public final int DEFAULT_SIZE = 10; // Public for GomokuGUI
+	public final int DEFAULT_SIZE = 6; // Public for GomokuGUI
 	public GameGrid gameGrid;
 	// Possible game states
 	public final int NOT_STARTED = 0;
@@ -65,38 +65,44 @@ public class GomokuGameState extends Observable implements Observer {
 	 */
 	public void move(int x, int y) {
 		// carries out a move the player \me" makes, if possible.
-		if (currentState != FINISHED || currentState != NOT_STARTED){
+		
+		if (currentState == FINISHED) {
+			message = "The game is already finished!";
+			setChangedNnotify();
+		}
+		else if (currentState == NOT_STARTED) {
+			message = "The game is not started";
+			setChangedNnotify();
+		}
+		else if (currentState != FINISHED && currentState != NOT_STARTED) {
 			if (currentState == MY_TURN) {
-				if (gameGrid.move(x, y, GameGrid.ME)){
-
-					message = "Square is empty! Move" + "(" + x + "," + y
-							+ ") made";
-					client.sendMoveMessage(x, y);
+				if (gameGrid.move(x, y, GameGrid.ME)) {
 					receivedMove(x,y);
+					message = "Square is empty! Move made!";
+					client.sendMoveMessage(x, y);
+//					receivedMove(x,y);
 					currentState = OTHER_TURN;
-					if (gameGrid.isWinner(GameGrid.ME)){
+					if (gameGrid.isWinner(GameGrid.ME)) {
 						currentState = FINISHED;
-						message = "You WON!";
 						setChangedNnotify();
-					}else{
+					} else {
+						
 						currentState = OTHER_TURN;
 						setChangedNnotify();
 					}
-				}else{
+				} else {
 					message = "Square is not empty, move is not made!";
 					setChangedNnotify();
 				}
-			}else if(currentState == NOT_STARTED){
-				message = "Connect to the OTHER player before clicking the grid";
-				setChangedNnotify();
-			}else{
-				message = "It's not your turn, move is not made!";
+			} else {
+				message = "It´s not your turn, move is not made!";
 				setChangedNnotify();
 			}
-		}else{
-			message = "The game is not started or already finished!";
-			setChangedNnotify();
 		}
+//		else {
+//			message = "The game is not started or already finished!";
+//			setChangedNnotify();
+//		}
 	}
 
 	public void setChangedNnotify() {
@@ -108,23 +114,11 @@ public class GomokuGameState extends Observable implements Observer {
 	 * Starts a new game with the current client
 	 */
 	public void newGame() {
-		System.out.println(currentState);
-		if(currentState == FINISHED){
-			gameGrid.clearGrid();
-			message = "Click the New Game Button to play again";
-			client.sendNewGameMessage();
-			setChangedNnotify();
-		}else if(currentState == NOT_STARTED){
-			message = "Connect to the OTHER player before clicking New Game";
-			client.sendNewGameMessage();
-			setChangedNnotify();
-		}else{
-			gameGrid.clearGrid();
-			currentState = OTHER_TURN;
-			message = "You have just started a NEW GAME!";
-			client.sendNewGameMessage();
-			setChangedNnotify();
-		}
+		gameGrid.clearGrid();
+		currentState = OTHER_TURN;
+		message = "You have just started a NEW GAME!";
+		client.sendNewGameMessage();
+		setChangedNnotify();
 	}
 
 	/**
@@ -169,14 +163,24 @@ public class GomokuGameState extends Observable implements Observer {
 	 */
 	public void receivedMove(int x, int y) {
 		gameGrid.move(x,y,GameGrid.OTHER);
-		if(gameGrid.isWinner(GameGrid.OTHER)) {
+		if (gameGrid.isWinner(GameGrid.OTHER)) {
+			// need to update board.
 			message = "The other player won!";
 			currentState = FINISHED;
 			setChangedNnotify();
-		}else{
-			message = "OTHER player made his move, now it's your turn!";
-			currentState = MY_TURN;
-			setChangedNnotify();
+			
+		} else {
+			if (gameGrid.isWinner(GameGrid.ME)) {
+				message="You won! GGWP!";
+				currentState=FINISHED;
+				setChangedNnotify();
+			}
+			else{
+				message = "The other player did not win after this move, its now your turn!";
+				currentState = MY_TURN;
+				setChangedNnotify();
+			}
+			
 		}
 	}
 
@@ -198,4 +202,3 @@ public class GomokuGameState extends Observable implements Observer {
 		return currentState;
 	}
 }
-

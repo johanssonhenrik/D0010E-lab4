@@ -12,7 +12,7 @@ public class GameGrid extends Observable{
 	public static int INROW = 5;
 	
 	private int[][] gameGridArray;
-	private int consoleStringOutputCounter = 0;
+	private static int consoleStringOutputCounter = 0;
 	
 	/**
 	 * Constructor
@@ -88,6 +88,10 @@ public class GameGrid extends Observable{
 	 * 
 	 */
 	public boolean isWinner(int player){
+
+		System.out.println(" ");
+		System.out.println("---------------------------["+consoleStringOutputCounter+"]----------------------------INROW="+INROW+"-----");
+		consoleStringOutputCounter++;
 		
 		int winnerCounter = 0;
 		
@@ -142,9 +146,6 @@ public class GameGrid extends Observable{
 				winnerCounter = 0;
 			}
 		}
-		System.out.println(" ");
-		System.out.println("---------------------------["+consoleStringOutputCounter+"]----------------------------INROW="+INROW+"-----");
-		consoleStringOutputCounter++;
 		return false;
 	}
 }

@@ -1,5 +1,4 @@
-/*
- * Created on 2007 feb 8
+* Created on 2007 feb 8
  */
 package lab4.data;
 
@@ -12,7 +11,7 @@ import lab4.client.GomokuClient;
  */
 public class GomokuGameState extends Observable implements Observer {
 	// Game variables
-	public final int DEFAULT_SIZE = 6; // Public for GomokuGUI
+	public final int DEFAULT_SIZE = 12; // Public for GomokuGUI
 	public GameGrid gameGrid;
 	// Possible game states
 	public final int NOT_STARTED = 0;
@@ -74,7 +73,7 @@ public class GomokuGameState extends Observable implements Observer {
 			message = "The game is not started";
 			setChangedNnotify();
 		}
-		else if (currentState != FINISHED && currentState != NOT_STARTED) {
+		else{
 			if (currentState == MY_TURN) {
 				if (gameGrid.move(x, y, GameGrid.ME)) {
 					receivedMove(x,y);
@@ -83,6 +82,7 @@ public class GomokuGameState extends Observable implements Observer {
 //					receivedMove(x,y);
 					currentState = OTHER_TURN;
 					if (gameGrid.isWinner(GameGrid.ME)) {
+						message = "You won! GGWP.";
 						currentState = FINISHED;
 						setChangedNnotify();
 					} else {
@@ -169,12 +169,12 @@ public class GomokuGameState extends Observable implements Observer {
 			currentState = FINISHED;
 			setChangedNnotify();
 			
-		} else {
-			if (gameGrid.isWinner(GameGrid.ME)) {
-				message="You won! GGWP!";
-				currentState=FINISHED;
-				setChangedNnotify();
-			}
+		} 
+//			if (gameGrid.isWinner(GameGrid.ME)) {
+//				message="You won! GGWP!";
+//				currentState=FINISHED;
+//				setChangedNnotify();
+//			}
 			else{
 				message = "The other player did not win after this move, its now your turn!";
 				currentState = MY_TURN;
@@ -182,7 +182,7 @@ public class GomokuGameState extends Observable implements Observer {
 			}
 			
 		}
-	}
+	
 
 	public void update(Observable o, Object arg) {
 		switch (client.getConnectionStatus()) {

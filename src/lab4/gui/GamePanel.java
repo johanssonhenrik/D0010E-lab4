@@ -50,8 +50,7 @@ public class GamePanel extends JPanel implements Observer {
 	public int[] getGridPosition(int x, int y) {
 		int[] integerArray = { x / UNIT_SIZE, y / UNIT_SIZE }; // unit size for
 																// conversion??
-		/*System.out.println("(" + integerArray[0] + " , " + integerArray[1]
-				+ ")");*/
+		
 		return integerArray;
 	}
 
@@ -59,42 +58,65 @@ public class GamePanel extends JPanel implements Observer {
 		this.repaint();
 	}
 
+	/**
+	 * 
+	 * 
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 * 
+	 * @param g
+	 * 
+	 * This method paints all the squares and markers on the grid.
+	 * 
+	 */
+	
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		for (int i = 0; i < grid.getSize(); i++) { // Y
 			for (int ii = 0; ii < grid.getSize(); ii++) {// X
 				//if (grid.getLocation(ii, i) == GameGrid.EMPTY)
-					buildingRect(ii, i, GameGrid.EMPTY, colorEMPTY, g);
+					buildingRect(ii, i, colorEMPTY, g);
 				if (grid.getLocation(ii, i) == GameGrid.ME) {
-					buildingOval(ii, i, GameGrid.ME, colorME, g);
+					buildingOval(ii, i, colorME, g);
 				}
 				if (grid.getLocation(ii, i) == GameGrid.OTHER) {
-					buildingCross(ii, i, GameGrid.OTHER, colorOTHER, g);
+					buildingCross(ii, i, colorOTHER, g);
 				}
 			}
 		}
 		this.repaint();
 	}
 
-	/*
+	/**
+	 * @ color Color of the rectangel
+	 * @param g	Graphic Object used for drawing the rectangel
+	 * @param Xs X-start Coord for the rectangle
+	 * @param Ys Y-start Coord for the rectangle
 	 * Creating gameFigures
 	 */
-	public void buildingRect(int Xs, int Ys, int State, Color color, Graphics g) {
+	public void buildingRect(int Xs, int Ys, Color color, Graphics g) {
 
 		int x = UNIT_SIZE;
 		int y = UNIT_SIZE;
 		g.setColor(color);
 		g.drawRect(Xs * x, Ys * y, UNIT_SIZE, UNIT_SIZE);
 	}
-
-	public void buildingOval(int Xs, int Ys, int State, Color color, Graphics g) {
+	/**
+	 * 
+	 * @param Xs Ys color g 
+	 * Creating gameFigures
+	 */
+	public void buildingOval(int Xs, int Ys, Color color, Graphics g) {
 		int x = UNIT_SIZE;
 		int y = UNIT_SIZE;
 		g.setColor(color);
 		g.drawOval(Xs * x + 1, Ys * y + 1, UNIT_SIZE - 2, UNIT_SIZE - 2);
 	}
-
-	public void buildingCross(int Xs, int Ys, int State, Color color, Graphics g) {
+	/**
+	 * 
+	 * @param Xs Ys color g 
+	 * Creating gameFigures
+	 */
+	public void buildingCross(int Xs, int Ys, Color color, Graphics g) {
 
 		int x = UNIT_SIZE;
 		int y = UNIT_SIZE;

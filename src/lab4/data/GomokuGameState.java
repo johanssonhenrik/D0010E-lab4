@@ -1,4 +1,4 @@
-* Created on 2007 feb 8
+/* Created on 2007 feb 8
  */
 package lab4.data;
 
@@ -12,16 +12,23 @@ import lab4.client.GomokuClient;
 public class GomokuGameState extends Observable implements Observer {
 	// Game variables
 	public final int DEFAULT_SIZE = 12; // Public for GomokuGUI
-	public GameGrid gameGrid;
+	private GameGrid gameGrid;
 	// Possible game states
-	public final int NOT_STARTED = 0;
-	public final int MY_TURN = 1;
-	public final int OTHER_TURN = 2;
-	public final int FINISHED = 3;
-	public int currentState;
-	public GomokuClient client;
-	public String message;
-
+	private final int NOT_STARTED = 0;
+	private final int MY_TURN = 1;
+	private final int OTHER_TURN = 2;
+	private final int FINISHED = 3;
+	private int currentState;
+	private GomokuClient client;
+	private String message;
+	
+	public int currentState(){
+		return currentState;
+	}
+	public int NOT_STARTED(){
+		return NOT_STARTED;
+	}
+	
 	/**
 	 * The constructor
 	 * 
@@ -95,7 +102,7 @@ public class GomokuGameState extends Observable implements Observer {
 					setChangedNnotify();
 				}
 			} else {
-				message = "ItÂ´s not your turn, move is not made!";
+				message = "It´s not your turn, move is not made!";
 				setChangedNnotify();
 			}
 		}

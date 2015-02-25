@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import lab4.client.GomokuClient;
 import lab4.data.GameGrid;
 import lab4.data.GomokuGameState;
-/*
+/**
  * The GUI class
  */
 public class GomokuGUI implements Observer{
@@ -58,7 +58,7 @@ public class GomokuGUI implements Observer{
 		connectButton = new JButton("Connect");
 		newGameButton = new JButton("New Game");
 		disconnectButton = new JButton("Disconnect");
-		if(gamestate.currentState == gamestate.NOT_STARTED){
+		if(gamestate.currentState() == gamestate.NOT_STARTED()){
 			newGameButton.setEnabled(false);
 			disconnectButton.setEnabled(false);
 		}
@@ -76,7 +76,7 @@ public class GomokuGUI implements Observer{
 				String buttonInput = e.getActionCommand();
 				if(buttonInput.equals("New Game")){
 					gamestate.newGame();
-					messageLabel.setText("New game started"); //Use messageLabel.setText(gamestate.getMessageString());;
+					messageLabel.setText("New game started");
 				}
 			}
 		});
@@ -85,7 +85,7 @@ public class GomokuGUI implements Observer{
 				String buttonInput = e.getActionCommand();
 				if(buttonInput.equals("Disconnect")){
 					gamestate.disconnect();
-					messageLabel.setText("Disconnected from the game")//messageLabel.setText(gamestate.getMessageString());
+					messageLabel.setText("Disconnected from the game");
 				}
 			}
 		});
@@ -112,6 +112,14 @@ public class GomokuGUI implements Observer{
 		boxThree.add(boxTwo);
 		frame.add(boxThree);
 	}
+	
+	/**
+	 * 
+	 * 
+	 * @param arg0	Object of the Observable class
+	 * 
+	 * 
+	 */
 	
 	public void update(Observable arg0, Object arg1) {
 		// Update the buttons if the connection status has changed
